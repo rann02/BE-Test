@@ -16,7 +16,12 @@ exports.refactoreMe1 = (req, res) => {
     let index9 = [];
     let index10 = [];
 
-    data.map((e) => {
+    data[0].map((e, idx) => {
+      // console.log(idx);
+      // if (idx === 0) {
+      //   console.log(e[0]);
+      // }
+      console.log(e);
       let values1 = e.values[0];
       let values2 = e.values[1];
       let values3 = e.values[2];
@@ -28,7 +33,7 @@ exports.refactoreMe1 = (req, res) => {
       let values9 = e.values[8];
       let values10 = e.values[9];
 
-      index1.push(values1);
+      [`index${idx}`].push(values1);
       index2.push(values2);
       index3.push(values3);
       index4.push(values4);
@@ -39,7 +44,18 @@ exports.refactoreMe1 = (req, res) => {
       index9.push(values9);
       index10.push(values10);
     });
-
+    console.log({
+      index1,
+      index2,
+      index3,
+      index4,
+      index5,
+      index6,
+      index7,
+      index8,
+      index9,
+      index10,
+    });
     let totalIndex1 = index1.reduce((a, b) => a + b, 0) / 10;
     let totalIndex2 = index2.reduce((a, b) => a + b, 0) / 10;
     let totalIndex3 = index3.reduce((a, b) => a + b, 0) / 10;

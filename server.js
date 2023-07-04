@@ -5,9 +5,22 @@ const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
 
+const http = require("http");
+const { Server } = require("socket.io");
+const { refactoreMe1 } = require("./app/controllers/exampleController.js");
+
+let retry = false;
+
 const corsOptions = {
   origin: ["http://localhost:8080"],
 };
+
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: corsOptions,
+  },
+});
 
 app.use(cors(corsOptions));
 
@@ -18,9 +31,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // database
-const db = require("./app/models");
+// TODO const db = require("./app/models");
 
-db.sequelize.sync();
+// TODO db.sequelize.sync();
 
 // never enable the code below in production
 // force: true will drop the table if it already exists
@@ -30,9 +43,7 @@ db.sequelize.sync();
 // });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Hello" });
-});
+app.get("/", refactoreMe1);
 
 // routes
 // require("./app/routes/exaole.routes")(app);
@@ -41,4 +52,15 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 7878;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
+});
+
+io.on("connect", (socket) => {
+  socket.on("from-fe", () => {
+    // kalau retry === true
+    // di FE axios.get('callmeWebSocket')
+    // retry = false
+  });
+
+  // setiap 3 menit di FE,
+  // socket.emit('from-fe', true)
 });

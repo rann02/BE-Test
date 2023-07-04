@@ -4,81 +4,19 @@ const db = require("../models");
 
 exports.refactoreMe1 = (req, res) => {
   // function ini sebenarnya adalah hasil survey dri beberapa pertnayaan, yang mana nilai dri jawaban tsb akan di store pada array seperti yang ada di dataset
-  db.sequelize.query(`select * from "surveys"`).then((data) => {
-    let index1 = [];
-    let index2 = [];
-    let index3 = [];
-    let index4 = [];
-    let index5 = [];
-    let index6 = [];
-    let index7 = [];
-    let index8 = [];
-    let index9 = [];
-    let index10 = [];
-
-    data[0].map((e, idx) => {
-      // console.log(idx);
-      // if (idx === 0) {
-      //   console.log(e[0]);
-      // }
-      console.log(e);
-      let values1 = e.values[0];
-      let values2 = e.values[1];
-      let values3 = e.values[2];
-      let values4 = e.values[3];
-      let values5 = e.values[4];
-      let values6 = e.values[5];
-      let values7 = e.values[6];
-      let values8 = e.values[7];
-      let values9 = e.values[8];
-      let values10 = e.values[9];
-
-      [`index${idx}`].push(values1);
-      index2.push(values2);
-      index3.push(values3);
-      index4.push(values4);
-      index5.push(values5);
-      index6.push(values6);
-      index7.push(values7);
-      index8.push(values8);
-      index9.push(values9);
-      index10.push(values10);
-    });
-    console.log({
-      index1,
-      index2,
-      index3,
-      index4,
-      index5,
-      index6,
-      index7,
-      index8,
-      index9,
-      index10,
-    });
-    let totalIndex1 = index1.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex2 = index2.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex3 = index3.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex4 = index4.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex5 = index5.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex6 = index6.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex7 = index7.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex8 = index8.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex9 = index9.reduce((a, b) => a + b, 0) / 10;
-    let totalIndex10 = index10.reduce((a, b) => a + b, 0) / 10;
-
-    let totalIndex = [
-      totalIndex1,
-      totalIndex2,
-      totalIndex3,
-      totalIndex4,
-      totalIndex5,
-      totalIndex6,
-      totalIndex7,
-      totalIndex8,
-      totalIndex9,
-      totalIndex10,
-    ];
+  db.sequelize.query(`select values from "surveys"`).then((data) => {
+    let counter = 0;
+    let totalIndex = [];
+    // console.log(data[1].rows);
+    for (let i = 0; i < data[1].rows[counter].values.length; i++) {
+      let tempSum = 0;
+      for (let j = 0; j < data[1].rows.length; j++) {
+        counter++;
+        tempSum += data[1].rows[j].values[i];
+      }
+      totalIndex.push(tempSum / 10);
+      counter = 0;
+    }
 
     res.status(200).send({
       statusCode: 200,

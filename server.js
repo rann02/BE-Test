@@ -7,7 +7,10 @@ const app = express();
 
 const http = require("http");
 const { Server } = require("socket.io");
-const { refactoreMe1 } = require("./app/controllers/exampleController.js");
+const {
+  refactoreMe1,
+  refactoreMe2,
+} = require("./app/controllers/exampleController.js");
 
 let retry = false;
 
@@ -43,7 +46,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // });
 
 // simple route
-app.get("/", refactoreMe1);
+app.get("/task-satu", refactoreMe1);
+app.post("/task-dua", refactoreMe2);
 
 // routes
 // require("./app/routes/exaole.routes")(app);

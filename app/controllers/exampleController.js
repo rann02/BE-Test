@@ -28,19 +28,21 @@ exports.refactoreMe1 = (req, res) => {
 
 exports.refactoreMe2 = (req, res) => {
   // function ini untuk menjalakan query sql insert dan mengupdate field "dosurvey" yang ada di table user menjadi true, jika melihat data yang di berikan, salah satu usernnya memiliki dosurvey dengan data false
-  Survey.create({
-    userId: req.body.userId,
-    values: req.body.values, // [] kirim array
-  })
+  let today = new Date();
+  let date = today.toLocaleDateString("id-ID");
+  db.sequelize
+    .query(
+      `INSERT INTO surveys ("userId","values", "createdAt","updatedAt") VALUES (${
+        req.body.userId
+      },'${req.body.values
+        .replace("[", "{")
+        .replace("]", "}")}', '${date}', '${date}') RETURNING *;`
+    )
     .then((data) => {
-      User.update(
-        {
-          dosurvey: true,
-        },
-        {
-          where: { id: req.body.id },
-        }
-      )
+      db.sequelize
+        .query(
+          `UPDATE users SET "dosurvey" = ${true} WHERE "id" = ${req.body.id};`
+        )
         .then(() => {
           console.log("success");
         })
